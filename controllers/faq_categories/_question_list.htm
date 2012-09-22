@@ -1,0 +1,43 @@
+<?
+    $questions = $form_model->list_related_records_deferred('questions', $this->formGetEditSessionKey());
+?>
+
+<table class="simpleList">
+    <thead>
+        <tr>
+            <? if ($questions->count): ?>
+                <th class="iconCell">&nbsp;</th>
+            <? endif ?>
+            <th>Question</th>
+            <th class="<?= !$questions->count ? 'last' : null ?>">Answer</th>
+            <? if ($questions->count): ?>
+                <th class="iconCell last">&nbsp;</th>
+            <? endif ?>
+        </tr>
+    </thead>
+
+    <tbody id="category_questions_list">
+        <? if (!$questions->count): ?>
+            <tr class="noData">
+                <td colspan="3" class="last">There are no questions.</td>
+            </tr>
+        <? else: ?>
+            <? foreach ($questions as $question):
+                $parent_session_key = $this->formGetEditSessionKey();
+                $onClick = "$('category_question_id').value = '{$question->id}'; new PopupForm('onLoadCategoryQuestionForm', {ajaxFields: $('category_question_id').getForm()}); return false;";
+            ?>
+                <tr class="<?= Phpr_Html::zebra('category_question') ?>">
+                    <td class="iconCell">
+                        <a href="#" class="row_drag_handle sort_handle" onclick="return false" title="Reorder questions">Reorder questions</a>
+                        <input class="question_id" value="<?= $question->id ?>" type="hidden"/>
+                        <input class="question_order" value="<?= $question->sort_order ?>" type="hidden"/>
+                    </td>
+
+                    <td class="link" onclick="<?= $onClick ?>"><a href="#" onclick="<?= $onClick ?>"><?= h(substr($question->displayField('title', 'list'),0,50)) ?></a></td>
+                    <td class="link" onclick="<?= $onClick ?>"><a href="#" onclick="<?= $onClick ?>"><?= h(substr($question->displayField('description_plain', 'list'),0,100)) ?></a></td>
+                    <td class="iconCell last"><a onclick="$('category_question_id').value = '<?= $question->id ?>'; return $(this).getForm().sendPhpr('onDeleteCategoryQuestion', {confirm: 'Do you really want to delete this question?', update: 'question_list', loadIndicator: {show: false}});" title="Delete question" class="icon delete" href="#">Delete</a></td>
+                </tr>
+            <? endforeach ?>
+        <? endif ?>
+    </tbody>
+</table>

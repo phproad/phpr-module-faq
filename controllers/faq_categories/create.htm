@@ -1,0 +1,28 @@
+<? Admin_Breadcrumb::add('Categories', 'faq/categories')->add($this->app_page_title); ?>
+<? Phpr_View::beginBlock("head") ?>
+    <script type="text/javascript" src="modules/faq/assets/javascript/category.js"></script>
+<? Phpr_View::endBlock() ?>
+<? Phpr_View::beginBlock("view") ?>
+	
+	<?= flash() ?>
+
+	<? if (!isset($fatalError)): ?>
+		<div class="form600">
+			<?= Phpr_Form::openTag(array('id'=>'form_element')) ?>
+				<input type="hidden" value="1" id="new_record_flag"/>
+
+				<? $this->formRender() ?>
+				
+				<div class="form_toolbar">
+					<?= backend_ajax_button('Create', 'create_onSave', array('class'=>'positive'), "prepareFunction: function(){phprTriggerSave();}") ?>
+					<?= backend_ajax_button('Create and Close', 'create_onSave', array(), "prepareFunction: function(){phprTriggerSave();}, extraFields: {create_close: 1}") ?>
+					<?= backend_ajax_button('Cancel', 'create_onCancel') ?>
+					<div class="clear"></div>
+				</div>
+
+			</form>
+		</div>
+	<? else: ?>
+		<p><a href="<?= url('/faq/categories') ?>">Return to the category list</a></p>
+	<? endif ?>
+<? Phpr_View::endBlock() ?>

@@ -1,0 +1,17 @@
+<? Admin_Breadcrumb::add('Categories', 'faq/categories')->add($this->app_page_title); ?>
+<? Phpr_View::beginBlock("head") ?>
+    <script type="text/javascript" src="modules/faq/assets/javascript/sort_order.js"></script>
+<? Phpr_View::endBlock() ?>
+
+<? Phpr_View::beginBlock("view") ?>
+
+    <?= flash() ?>
+
+    <?=$this->hint_render('faq_sort_order',  'Manage category order by dragging white icons in the list below.', false)?>
+
+    <?= Phpr_Form::openTag(array('id'=>$this->listGetFormId())) ?>
+        <div class="list-hide-setup-panel">
+            <?= $this->listRender(array('list_control_panel'=>'sort_order_control_panel')) ?>
+        </div>
+    </form>
+<? Phpr_View::endBlock() ?>

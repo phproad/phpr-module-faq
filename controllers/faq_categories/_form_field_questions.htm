@@ -1,0 +1,35 @@
+<li>
+    <div id="question_list" class="clear relative">
+        <? $this->renderPartial('question_list') ?>
+    </div>
+
+    <p class="last">
+        <a class="imageLink add" href="#" onclick="$('category_question_id').value = ''; new PopupForm('onLoadCategoryQuestionForm', {ajaxFields: $('question_list').getForm()}); return false;"><span>Add question</span></a>
+    </p>
+    <div class="clear"></div>
+
+    <input type="hidden" name="category_question_id" id="category_question_id" value=""/>
+    <script type="text/javascript">
+        function updateCategoryQuestionList()
+        {
+            cancelPopup();
+
+            $('question_list').getForm().sendPhpr(
+                'updateCategoryQuestionList',
+                {
+                    update: 'question_list',
+                    loadIndicator: {
+                        show: true,
+                        element: 'question_list',
+                        hideOnSuccess: true,
+                        injectInElement: true,
+                        src: 'phproad/resources/images/form_load_30x30.gif'
+                    },
+                    onSuccess: function(){
+                        make_questions_sortable();
+                    }
+                }
+            )
+        }
+    </script>
+</li>
